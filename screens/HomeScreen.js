@@ -6,9 +6,12 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
+  StatusBar,
   View,
   FlatList
 } from 'react-native';
+
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
@@ -17,17 +20,81 @@ export default class HomeScreen extends React.Component {
    constructor(props) {
      super(props);
      this.state = {
-       data: [{
-         name: "Lena",
-         image: "https://robohash.org/Lena.png"
-       }, {
-         name: "Rauf",
-         image: "https://robohash.org/Rauf.png"
-       }, {
-         name: "Amin",
-         image: "https://robohash.org/Amin.png"
-       }]
+       list: [
+          {
+    "id": 524894,
+    "name": "Moskva",
+    "country": "RU",
+    "coord": {
+      "lon": 37.606667,
+      "lat": 55.761665
+    }
+  },
+  {
+    "id": 587081,
+    "name": "Baku City",
+    "country": "AZ",
+    "coord": {
+      "lon": 49.882221,
+      "lat": 40.395279
+    }
+  },
+    {
+    "id": 5391997,
+    "name": "San Francisco County",
+    "country": "US",
+    "coord": {
+      "lon": -122.45108,
+      "lat": 37.766602
+    }
+  },
+  {
+    "id": 5388319,
+    "name": "Rocklin",
+    "country": "US",
+    "coord": {
+      "lon": -121.235779,
+      "lat": 38.79073
+    }
+  },
+    {
+    "id": 5389519,
+    "name": "Sacramento County",
+    "country": "US",
+    "coord": {
+      "lon": -121.317734,
+      "lat": 38.466579
+    }
+  },
+   {
+    "id": 5856194,
+    "name": "Honolulu County",
+    "country": "US",
+    "coord": {
+      "lon": -157.966675,
+      "lat": 21.466669
+    }
+  },
+    {
+    "id": 5400075,
+    "name": "Sunnyvale",
+    "country": "US",
+    "coord": {
+      "lon": -122.036346,
+      "lat": 37.368832
+    }
+  }
+       ]
      }
+   }
+
+fetchCityTemp(city, contry){
+return  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${contry}&appid=a50bd3fef4c6d0ae25fbe9fdc91717e5`)
+.then((response)=>response.json())
+.then ((responseJson)=>{return responseJson.cityWeather;})
+    .catch((error)=>{
+      console.log(error)
+    })
    }
 
 static navigationOptions = {
@@ -55,7 +122,7 @@ static navigationOptions = {
           )}
           />
 
-            <Image
+            {/*<Image
               source={
                 __DEV__
                   ? require('../assets/images/robot-dev.png')
@@ -82,8 +149,8 @@ static navigationOptions = {
           <View style={styles.helpContainer}>
             <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
               <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> */}
+            </View> 
         </ScrollView>
 
         <View style={styles.tabBarInfoContainer}>
@@ -134,7 +201,7 @@ static navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff000',
+    backgroundColor: '#fff',
   },
   developmentModeText: {
     marginBottom: 20,
