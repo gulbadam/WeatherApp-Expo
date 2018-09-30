@@ -88,21 +88,31 @@ export default class HomeScreen extends React.Component {
      }
    }
 
-fetchCityTemp(city, contry){
-return  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${contry}&appid=a50bd3fef4c6d0ae25fbe9fdc91717e5`)
+fetchCityTemp(city, country){
+return  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=a50bd3fef4c6d0ae25fbe9fdc91717e5`)
 .then((response)=>response.json())
-.then ((responseJson)=>{return responseJson.cityWeather;})
+.then ((responseJson)=>{console.log(responseJson); return responseJson.cityWeather;})
     .catch((error)=>{
       console.log(error)
     })
    }
 
+fetchTemp=()=> {
+  for (let i = 0; i < this.state.list.length; i++) {
+    const name = this.state.list[i].name;
+    const country =this.state.list[i].country;
+    this.fetchCityTemp(name, country)
+    
+  }
+  
+}
 static navigationOptions = {
     header: null,
   };
   
 
   render() {
+    this.fetchTemp()
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
