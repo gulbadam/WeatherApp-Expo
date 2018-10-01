@@ -84,20 +84,36 @@ export default class HomeScreen extends React.Component {
       "lat": 37.368832
     }
   }
-       ]
+       ],
+       weatherData: []
+
+       
      }
+     
    }
 
 fetchCityTemp(city, country){
-return  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=a50bd3fef4c6d0ae25fbe9fdc91717e5`)
+return fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=a50bd3fef4c6d0ae25fbe9fdc91717e5`)
 .then((response)=>response.json())
-.then ((responseJson)=>{console.log(responseJson); return responseJson.cityWeather;})
+.then((responseJson) => {console.log(responseJson);
+  const r = responseJson.main;
+  const obj = responseJson;
+  const cityWeather = {
+    name: obj.name,
+    country: country,
+    temp: Math.ceil(r.temp),
+    type: obj.weather[0].main
+  }
+  this.state.weatherData.push(cityWeather)
+  console.log(this.state.weatherData);
+})
     .catch((error)=>{
       console.log(error)
     })
    }
 
 fetchTemp=()=> {
+  
   for (let i = 0; i < this.state.list.length; i++) {
     const name = this.state.list[i].name;
     const country =this.state.list[i].country;
@@ -106,28 +122,34 @@ fetchTemp=()=> {
   }
   
 }
+
 static navigationOptions = {
     header: null,
   };
-  
+
+componentWillMount() {
+  this.fetchTemp()
+}
+
 
   render() {
-    this.fetchTemp()
+  console.log(this.state.weatherData)
+  
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
-          <FlatList data={this.state.data} keyExtractor={(item, index)=> index.toString()}
-          renderItem={({item, separator})=>(
+          <Text>City Weather</Text>
+          <FlatList data={this.state.list} keyExtractor={(item, index)=> index.toString()} 
+          renderItem={({item, index})=>(
             <View>
-            <Image style = {
-              {width: 100, height: 100}
-            }
+            <Text> {'Temp'}C - {item.name} - {item.country}</Text>
+           
+
+            { /*<Image style = {{width: 100, height: 100}}
             source = {{uri: item.image}}
-            />
-            <Text>
-            {item.name}
-            </Text>
+          />*/}
+            
             </View>
           )}
           />
