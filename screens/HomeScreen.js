@@ -107,7 +107,8 @@ fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid
     id: obj.id,
     name: obj.name,
     country: country,
-    temp: Math.ceil(r.temp),
+    tempC: (Math.ceil(r.temp)-273),
+    tempF: Math.ceil(9 / 5 * (Math.ceil(r.temp) - 273) + 32),
     type: obj.weather[0].main
   }
   //this.state.weatherData.push(cityWeather)
@@ -161,7 +162,7 @@ static navigationOptions = {
           <FlatList data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
             <View>
-            <Text> {item.temp} C - {item.name} - {item.country}</Text>
+            <Text> {item.tempC} C  / {item.tempF} F - {item.name} - {item.country}</Text>
            
 
             { /*<Image style = {{width: 100, height: 100}}
