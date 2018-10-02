@@ -85,7 +85,9 @@ export default class HomeScreen extends React.Component {
     }
   }
        ],
-       weatherData: []
+       weatherData: [],
+       loading: false,
+       refreshing: false,
 
        
      }
@@ -93,19 +95,28 @@ export default class HomeScreen extends React.Component {
    }
 
 fetchCityTemp(city, country){
-return fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=a50bd3fef4c6d0ae25fbe9fdc91717e5`)
+  this.setState({
+    loading: true
+  });
+fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=1d85be1cb12df86525d2bd57ef4c4e29`)
 .then((response)=>response.json())
-.then((responseJson) => {console.log(responseJson);
+.then((responseJson) => {console.log("respJson", responseJson);
   const r = responseJson.main;
   const obj = responseJson;
   const cityWeather = {
+    id: obj.id,
     name: obj.name,
     country: country,
     temp: Math.ceil(r.temp),
     type: obj.weather[0].main
   }
-  this.state.weatherData.push(cityWeather)
-  console.log(this.state.weatherData);
+  //this.state.weatherData.push(cityWeather)
+  console.log("weatherData", this.state.weatherData);
+  this.setState({
+    weatherData: [...this.state.weatherData, cityWeather],
+    loading: false,
+    refreshing: false
+  })
 })
     .catch((error)=>{
       console.log(error)
@@ -122,28 +133,35 @@ fetchTemp=()=> {
   }
   
 }
+componentDidMount = () => {
+  this.fetchTemp()
+};
+
+
+
+
 
 static navigationOptions = {
     header: null,
   };
 
-componentWillMount() {
-  this.fetchTemp()
-}
+
+
 
 
   render() {
-  console.log(this.state.weatherData)
+    console.log("list", this.state.list)
+  console.log("data", this.state.weatherData)
   
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
           <Text>City Weather</Text>
-          <FlatList data={this.state.list} keyExtractor={(item, index)=> index.toString()} 
+          <FlatList data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
             <View>
-            <Text> {'Temp'}C - {item.name} - {item.country}</Text>
+            <Text> {item.temp} C - {item.name} - {item.country}</Text>
            
 
             { /*<Image style = {{width: 100, height: 100}}
