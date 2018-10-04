@@ -156,13 +156,16 @@ static navigationOptions = {
   
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={{width: '100%'}}>
           <View style={styles.welcomeContainer}>
-          <Text>City Weather</Text>
-          <FlatList data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
+          <Text style={styles.headText}>City Weather</Text>
+          <FlatList style={{width: '100%'}} data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
-            <View>
-            <Text> {item.tempC} C  / {item.tempF} F - {item.name} - {item.country}</Text>
+            <View style={styles.row}>
+              <Text style={styles.temp}> {item.tempC} °C</Text>
+              <Text style={styles.temp}> {item.tempF} °F</Text>
+              <Text style={styles.cityName}>{item.name}</Text>
+              { /* <Text style={styles.cityName}>{item.country}</Text>*/}
            
 
             { /*<Image style = {{width: 100, height: 100}}
@@ -253,6 +256,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  headText: {
+    paddingTop: 40,
+    paddingBottom: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: "green"
+  },
+  row: {
+    flex: 1,
+    paddingVertical: 25,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+
+  },
+  temp: {
+    fontSize: 22,
+    lineHeight: 40,
+    width: 80,
+    fontWeight: 'bold',
+    fontFamily: 'Avenir',
+  },
+  cityName: {
+    fontSize: 20,
+    lineHeight: 40,
+    fontFamily: 'Avenir',
+
+
   },
   developmentModeText: {
     marginBottom: 20,
@@ -268,6 +305,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
+    width:"100%"
   },
   welcomeImage: {
     width: 100,
@@ -278,7 +316,6 @@ const styles = StyleSheet.create({
   },
   getStartedContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
   },
   homeScreenFilename: {
     marginVertical: 7,
