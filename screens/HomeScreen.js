@@ -195,7 +195,7 @@ static navigationOptions = {
       <View style={styles.container}>
         <ScrollView style={{width: '100%'}}>
           <View style={styles.welcomeContainer}>
-          <Text style={styles.headText}>City Weather</Text>
+          <Text style={styles.headText}> ☀️City Weather☀️</Text>
           <FlatList style={{width: '100%'}} data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
             <TouchableHighlight  underlayColor="grey" onPress={()=>alert(`${item.humidity}   ${item.type}`)}>
@@ -313,13 +313,17 @@ const styles = StyleSheet.create({
     
   },
   headText: {
-    paddingTop: 40,
-    paddingBottom: 40,
+    paddingTop: 30,
+    paddingBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    color: "green"
+    color: "green",
+    width: "100%",
+    textAlign:'center'
+    
+    
   },
   row: {
     flex: 1,
