@@ -12,7 +12,7 @@ import {
   FlatList
 } from 'react-native';
 
-import { WebBrowser } from 'expo';
+import { WebBrowser, LinearGradient } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
@@ -174,6 +174,7 @@ static navigationOptions = {
           <Text style={styles.headText}>City Weather</Text>
           <FlatList style={{width: '100%'}} data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
+            <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']} start={[0,0.5]} style={{borderRadius: 10}}>
             <View style={styles.row}>
               <Text style={[
                 (this.getTempRange(item.tempC)==1) ? styles.cold : styles.temp,
@@ -196,6 +197,7 @@ static navigationOptions = {
           />*/}
             
             </View>
+            </LinearGradient>
           )}
           />
 
@@ -230,13 +232,13 @@ static navigationOptions = {
             </View> 
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
+        {/* <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
 
           <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
             <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
           </View>
-        </View>
+          </View> */}
       </View>
     );
   }
@@ -299,8 +301,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: "white",
-
-  },
+},
   temp: {
     fontSize: 22,
     lineHeight: 40,
