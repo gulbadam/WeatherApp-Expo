@@ -109,7 +109,8 @@ fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid
     country: country,
     tempC: (Math.ceil(r.temp)-273),
     tempF: Math.ceil(9 / 5 * (Math.ceil(r.temp) - 273) + 32),
-    type: obj.weather[0].main
+    type: obj.weather[0].main,
+    humidity : `Humidity ${r.humidity} %`
   }
   //this.state.weatherData.push(cityWeather)
   console.log("weatherData", this.state.weatherData);
@@ -136,6 +137,29 @@ fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid
     else {
       return 4
     }
+  }
+  getEmoji=(type)=>{
+    if (type=="Clouds"){
+      return "☁️";
+    } else if (type=="Clear") {
+      return "☀️"
+      
+    } else if (type=="Haze") {
+      return "🌥"
+      
+    } else if (type=="Thunderstorm") {
+      return "⛈"
+
+    }else if (type == "Rain") {
+      return "🌧"
+    } else if (type == "Snow") {
+        return "❄️"
+    
+        } else if (type == "Drizzle") {
+          return "🌦"
+          } else if (type == "Fog") {
+            return "🌫"
+}
   }
 fetchTemp=()=> {
   
@@ -174,6 +198,7 @@ static navigationOptions = {
           <Text style={styles.headText}>City Weather</Text>
           <FlatList style={{width: '100%'}} data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
+            <TouchableHighlight  underlayColor="grey" onPress={()=>alert(`${item.humidity}   ${item.type}`)}>
             <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']} start={[0,0.5]} style={{borderRadius: 10}}>
             <View style={styles.row}>
               <Text style={[
@@ -181,7 +206,7 @@ static navigationOptions = {
                 (this.getTempRange(item.tempC) == 2) ? styles.medium : styles.temp,
                 (this.getTempRange(item.tempC) == 3) ? styles.high : styles.temp,
                 (this.getTempRange(item.tempC) == 4) ? styles.hot : styles.temp,
-                styles.temp]}> {item.tempC} °C</Text>
+                styles.temp]}> {this.getEmoji(item.type)} {item.tempC} °C</Text>
               <Text style={[
                 (this.getTempRange(item.tempC) == 1) ? styles.cold : styles.temp,
                 (this.getTempRange(item.tempC) == 2) ? styles.medium : styles.temp,
@@ -198,6 +223,7 @@ static navigationOptions = {
             
             </View>
             </LinearGradient>
+            </TouchableHighlight>
           )}
           />
 
@@ -305,7 +331,7 @@ const styles = StyleSheet.create({
   temp: {
     fontSize: 22,
     lineHeight: 40,
-    width: 80,
+    width: 95,
     fontWeight: 'bold',
     fontFamily: 'Avenir',
   },
