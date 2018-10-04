@@ -123,7 +123,20 @@ fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid
       console.log(error)
     })
    }
+  getTempRange = (t) => {
+    if (t < 11) {
+      return 1;
+    }
+    else if (t > 10 && t < 20) {
+      return 2
 
+    } else if (t >= 20 && t < 30) {
+      return 3
+    }
+    else {
+      return 4
+    }
+  }
 fetchTemp=()=> {
   
   for (let i = 0; i < this.state.list.length; i++) {
@@ -162,8 +175,18 @@ static navigationOptions = {
           <FlatList style={{width: '100%'}} data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
             <View style={styles.row}>
-              <Text style={styles.temp}> {item.tempC} °C</Text>
-              <Text style={styles.temp}> {item.tempF} °F</Text>
+              <Text style={[
+                (this.getTempRange(item.tempC)==1) ? styles.cold : styles.temp,
+                (this.getTempRange(item.tempC) == 2) ? styles.medium : styles.temp,
+                (this.getTempRange(item.tempC) == 3) ? styles.high : styles.temp,
+                (this.getTempRange(item.tempC) == 4) ? styles.hot : styles.temp,
+                styles.temp]}> {item.tempC} °C</Text>
+              <Text style={[
+                (this.getTempRange(item.tempC) == 1) ? styles.cold : styles.temp,
+                (this.getTempRange(item.tempC) == 2) ? styles.medium : styles.temp,
+                (this.getTempRange(item.tempC) == 3) ? styles.high : styles.temp,
+                (this.getTempRange(item.tempC) == 4) ? styles.hot : styles.temp,
+                styles.temp]}> {item.tempF} °F</Text>
               <Text style={styles.cityName}>{item.name}</Text>
               { /* <Text style={styles.cityName}>{item.country}</Text>*/}
            
@@ -252,6 +275,7 @@ static navigationOptions = {
   };
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -288,9 +312,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 40,
     fontFamily: 'Avenir',
-
-
-  },
+},
+cold: {
+color: "blue"
+},
+medium: {
+  color: "green"
+},
+high: {
+  color: 'orange'
+},
+hot: {
+  color: "red"
+},
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',
