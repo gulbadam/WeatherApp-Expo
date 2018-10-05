@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   container: {
       flex: 1,
       backgroundColor: '#fff',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
 
     },
@@ -201,6 +201,8 @@ const styles = StyleSheet.create({
     },
     row: {
       flex: 1,
+      width: 365,
+      height: 150,
       paddingVertical: 25,
       flexDirection: 'row',
       borderBottomWidth: 1,

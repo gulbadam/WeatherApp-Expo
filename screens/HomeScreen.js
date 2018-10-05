@@ -88,6 +88,7 @@ export default class HomeScreen extends React.Component {
        weatherData: [],
        loading: false,
        refreshing: false,
+       newAlert: 0
 
        
      }
@@ -190,7 +191,7 @@ static navigationOptions = {
   render() {
     console.log("list", this.state.list)
   console.log("data", this.state.weatherData)
-  
+  //alert(`${item.humidity}   ${item.type}`)
     return (
       <View style={styles.container}>
         <ScrollView style={{width: '100%'}}>
@@ -198,7 +199,7 @@ static navigationOptions = {
           <Text style={styles.headText}> ☀️City Weather☀️</Text>
           <FlatList style={{width: '100%'}} data={this.state.weatherData} keyExtractor={(item, index)=> index.toString()} 
           renderItem={({item, index})=>(
-            <TouchableHighlight  underlayColor="grey" onPress={()=>alert(`${item.humidity}   ${item.type}`)}>
+            <TouchableHighlight  underlayColor="grey" onPress={()=>this.setState({newAlert: 1, alertMsg: `${item.humidity}  -  ${item.type}`})}>
             <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']} start={[0,0.5]} style={{borderRadius: 10}}>
             <View style={styles.row}>
               <Text style={[
@@ -214,58 +215,27 @@ static navigationOptions = {
                 (this.getTempRange(item.tempC) == 4) ? styles.hot : styles.temp,
                 styles.temp]}> {item.tempF} °F</Text>
               <Text style={styles.cityName}>{item.name}</Text>
-              { /* <Text style={styles.cityName}>{item.country}</Text>*/}
-           
-
-            { /*<Image style = {{width: 100, height: 100}}
-            source = {{uri: item.image}}
-          />*/}
-            
             </View>
             </LinearGradient>
             </TouchableHighlight>
           )}
           />
-
-            {/*<Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity> */}
-            </View> 
+        </View> 
         </ScrollView>
-
-        {/* <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
+        {this.state.newAlert ==1 ? (
+          <View style={{flex:1, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0,  left: 0, height: '100%', width: '100%', backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <View style={{width: "75%", height: 100}}>
+          <LinearGradient colors={['#136a8a', '#267871']} start={[0, 0.65]} style={{flex: 1, borderRadius: 20, justifyContent: 'space-between', padding: 5, shadowColor: 'black', shadowOffset:{width: 0, height: 2}, shadowOpacity: 0.3, shadowRadius: 2}}>
+          <Text style={{fontSize: 16, color: "white", padding: 10, textAlign: 'center'}}>{this.state.alertMsg}</Text>
+          <TouchableHighlight underlayColor="grey" onPress={()=>this.setState({alertMsg: "", newAlert: 0})}>
+          <Text style={{fontWeight: 'bold', color: 'white', padding: 10, textAlign: 'center'
+          }}>Close</Text>
+          </TouchableHighlight>
+          </LinearGradient>
           </View>
-          </View> */}
-      </View>
+          </View>
+        ): ""}
+    </View>
     );
   }
 
@@ -321,9 +291,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "green",
     width: "100%",
-    textAlign:'center'
-    
-    
+    textAlign:'center',
   },
   row: {
     flex: 1,
