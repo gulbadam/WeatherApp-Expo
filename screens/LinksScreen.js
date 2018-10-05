@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView,
+  TextInput,
 Image,
 Platform,
 StyleSheet,
@@ -124,9 +125,21 @@ export default class SearchScreen extends React.Component {
       <ScrollView style={{width: '100%'}}>
          <View style={styles.welcomeContainer}>
           <Text style={styles.headText}> ☀️City Weather☀️</Text>
+          <View style={styles.welcomeContainer}>
+          <Text style={{textAlign:'center', lineHeight: 20,  padding: 5, fontSize: 15}}>Search for City</Text>
+          <TextInput 
+          style={{width: 250, padding: 15, margin: 5, backgroundColor: 'gray', color: "white", justifyContent: "center", borderRadius: 8, fontSize: 16, fontWeight: "600"}}
+          onChangeText={(text)=> this.setState({searchInput: text})}
+          value={this.state.searchInput}
+          />
+          <TouchableHighlight
+          style={{backgroundColor: "blue", padding: 20, borderRadius: 8}}
+          onPress={()=>{this.searchCity()}}>
+          <Text style={{fontSize: 14, color: "white", fontWeight: 'bold', textAlign: 'center'}}>Search</Text>
+          </TouchableHighlight>
+          </View>
           {this.state.searchResult ==1 ? (
-          
-            <TouchableHighlight  underlayColor="grey" onPress={()=>alert(`${this.state.item.humidity}   ${this.state.item.type}`)}>
+          <TouchableHighlight  underlayColor="grey" onPress={()=>alert(`${this.state.item.humidity}   ${this.state.item.type}`)}>
             <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']} start={[0,0.5]} style={{borderRadius: 10}}>
             <View style={styles.row}>
               <Text style={[
@@ -225,6 +238,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginTop: 10,
       marginBottom: 20,
+      justifyContent: 'center',
       width: "100%"
     },
     welcomeImage: {
