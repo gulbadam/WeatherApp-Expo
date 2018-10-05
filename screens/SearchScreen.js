@@ -13,9 +13,12 @@ FlatList
 }
 from 'react-native';
 import {
-  ExpoLinksView,
-  LinearGradient
+  ExpoLinksView
 } from '@expo/samples';
+import {
+  WebBrowser,
+  LinearGradient
+} from 'expo';
 
 export default class SearchScreen extends React.Component {
   constructor(props) {
@@ -27,13 +30,17 @@ export default class SearchScreen extends React.Component {
           item: {}
         }
       }
+searchCity=()=> {
+  this.fetchCityTemp(this.state.searchInput)
+}
+
       fetchCityTemp(city) {
           this.setState({
             loading: true,
             item: {},
             searchResult: 0,
             error: "Search for a city..."});
-            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=1d85be1cb12df86525d2bd57ef4c4e29`)
+            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=1d85be1cb12df86525d2bd57ef4c4e29`)
               .then((response) => response.json())
               .then((responseJson) => {
                 console.log("respJson", responseJson);
@@ -49,7 +56,6 @@ export default class SearchScreen extends React.Component {
                   const cityWeather = {
                     id: obj.id,
                     name: obj.name,
-                    country: country,
                     tempC: (Math.ceil(r.temp) - 273),
                     tempF: Math.ceil(9 / 5 * (Math.ceil(r.temp) - 273) + 32),
                     type: obj.weather[0].main,
@@ -138,7 +144,7 @@ export default class SearchScreen extends React.Component {
           <Text style={{fontSize: 14, color: "white", fontWeight: 'bold', textAlign: 'center'}}>Search</Text>
           </TouchableHighlight>
           </View>
-          {this.state.searchResult ==1 ? (
+          {this.state.searchResult == 1 ? (
           <TouchableHighlight  underlayColor="grey" onPress={()=>alert(`${this.state.item.humidity}   ${this.state.item.type}`)}>
             <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']} start={[0,0.5]} style={{borderRadius: 10}}>
             <View style={styles.row}>
